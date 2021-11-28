@@ -1,39 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export const Radio = (props) => {
-  const { index } = props;
+  const dispatch = useDispatch()
+  const { options, correctOption, onChange,setRadioAns,index,quationId, } = props;
+  console.log(quationId,"quationId")
+  // const [countMark, setCountMark] = useState(0);
+  
+  const [selectoption, setSelectoption] = useState([])
+  // const [flage, setFlage] = useState(false)
+  const [optionsInd,setOptionsInd] = useState([])
+  const [handleradio,setHandleradio]=useState()
+  console.log(optionsInd,"options")
+  // const [wrongAns, setWrongAns]  = useState([])
+  // console.log(selectoption,"selectOption ")
+ const state = useSelector(state=>state.userAns)
+ const test =  useSelector(state=>state.TestDetails)
+ 
+  useEffect(()=>{
+    //  setHandleradio(quationId)
+  },[])
+  
+  // console.log(count,"count")
 
-  const [optionindex, setOptionindex] = useState({});
-  console.log(optionindex, "optionIdex");
-  //   console.log(optionindex1[0]?.questions[0]?.options((i)=>{
-  //       console.log(i,"options")
-  //   }),"optionindex1")
-
-  useEffect(() => {
-    const testInfo = localStorage.getItem("testInfo")
-      ? JSON.parse(localStorage.getItem("testInfo"))
-      : {};
-    setOptionindex([testInfo]);
-  }, []);
-
-  const handleClick = (index) => {
-    console.log(index, "ind");
-    // setOptionindex([...optionindex[0].slice(0,index),{}])
+  const handleChange = (i,ind) => {
+    setHandleradio(quationId)
+    // selectoption([...options[1].flag:!false])
+    // setnextSelect({selectedOption:ind,questionid:quationId})
+    // setSelectoption()
+    // ind.target.checked=true
+    if(correctOption === ind){
+      dispatch({type:"RADIO_ANS",payload:ind})
+      dispatch({type:"CORRECT_RADIO_ANS",payload:correctOption})  
+      // setFlage(true)
+    }
+    // dispatch({type:"RADIO_ANS",payload:{selectedOption:ind,questionid:quationId,flage:flage}})
+    // dispatch({type:"CORRECT_RADIO_ANS",payload:correctOption})  
   };
-
+  // console.log(flage,"flage")
   return (
     <>
       <Card.Text>
-        {optionindex[0]?.questions[index].options.map((i, index) => {
+        {options.map((i, ind) => {
           return (
             <div>
-              <input
-                type="radio"
-                checked={optionindex[0]?.check}
-                onClick={() => handleClick(index)}
-              />{" "}
-              {i}
+              <label>
+                <input
+                  type="radio"
+                  checked={handleradio === quationId}
+                  name={"option"+quationId}
+                  value={quationId}
+                  id={ind}
+                  onChange={() => handleChange(i,ind)}
+                />
+                {"  "}
+                {i}
+              </label>
             </div>
           );
         })}
